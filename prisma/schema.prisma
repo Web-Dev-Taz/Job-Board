@@ -10,6 +10,8 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+//Authentication using the nextauth library
+
 model User {
   id            String    @id @default(cuid())
   name          String?
@@ -21,6 +23,7 @@ model User {
   updatedAt     DateTime  @updatedAt
   accounts      Account[]
   sessions      Session[]
+  Job            Job[]
 }
 
 model VerificationToken {
@@ -58,4 +61,20 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+//Authentication
+
+//App 
+
+model Job {
+  id           Int      @id @default(autoincrement())
+  createdAt    DateTime @default(now())
+  title        String?
+  description  String?
+  salary       String?
+  location     String?
+  published    Boolean @default(true)
+  author       User     @relation(fields: [authorId], references: [id])
+  authorId     String
 }
